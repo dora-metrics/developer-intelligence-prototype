@@ -17,7 +17,7 @@ import {
 
 import { DeploymentFrequencyChart } from '@/components/deployment-frequency/chart'
 import { LeadTimeForChangeChart } from '@/components/lead-time-for-change/chart'
-import { IsolatedChangeFailureRateChart } from '@/components/change-failure-rate/iso-chart'
+import { ChangeFailureRateChart } from '@/components/change-failure-rate/chart'
 import { MeanTimeToRecoveryChart } from '@/components/mean-time-to-recovery/chart'
 
 import { DeploymentFrequencyTabTrigger } from './deployment-frequency/tab-trigger'
@@ -91,7 +91,6 @@ export function Dashboard({ data, appList }) {
 
         <div className="flex justify-end items-center gap-4">
           <AppSelector appList={appList} activeApp={activeApp} setActiveApp={setActiveApp} />
-          <ApplicationSelector applications={applicationsList} activeApplication={activeApplication} changeActiveApplication={changeActiveApplication} />
           <DateRangeSelector activeDateRange={activeDateRange} setActiveDateRange={setActiveDateRange} />
         </div>
       </div>
@@ -158,14 +157,14 @@ export function Dashboard({ data, appList }) {
             </TabsContent>
             <TabsContent value="dora-cfr" className="p-6 mt-8">
               <div className="h-64">
-                <IsolatedChangeFailureRateChart data={dataChangeFailureRate} />
+                <ChangeFailureRateChart dateRange={activeDateRange} appName={activeApp} />
               </div>
               <div className="mt-8">
                 <h2 className="flex items-center gap-2 mb-4 font-semibold dark:text-white">
                   <TableIcon />
                   Failed deployments
                 </h2>
-                <ChangeFailureRateTable />
+                <ChangeFailureRateTable dateRange={activeDateRange} appName={activeApp} />
               </div>
             </TabsContent>
             <TabsContent value="dora-mttr" className="p-6 mt-8">
