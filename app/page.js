@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import ButtonSignInGithub from '@/components/button-signin-github'
 import ButtonSignInGoogle from '@/components/button-signin-google'
+import ButtonSignInKeyCloak from '@/components/button-signin-keycloak'
+import ButtonSignInOpenShift from '@/components/button-signin-openshift'
 import SignInPhoto from '@/public/images/image--sign-in.jpg'
 import BlurImage from '@/components/blur-image'
 import { AppLogo } from '@/components/app-logo'
@@ -68,6 +70,8 @@ export default async function AuthenticationPage() {
                   </div>
                 </div>
                 <ButtonSignInGoogle />
+                <ButtonSignInKeyCloak />
+                <ButtonSignInOpenShift />
                 <p className="px-8 text-center text-sm text-muted-foreground">By signing in, you agree to our <Link href="https://www.redhat.com/en/about/terms-use">terms of service</Link> and <Link href="https://www.redhat.com/en/about/privacy-policy">privacy policy</Link>.</p>
               </>
             )}

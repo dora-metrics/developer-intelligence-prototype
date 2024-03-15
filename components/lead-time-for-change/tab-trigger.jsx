@@ -4,8 +4,11 @@ import { Clock4, ArrowDown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { InfoTooltip } from '@/components/info-tooltip'
 import { LeadTimeForChangeRating } from './rating'
+import { useState, useEffect } from "react"
+import { getDaysBetweenDates } from '@/components/date-range-selector'
+import { fetchLeadTimeForChange } from './leadTimeForChange'
 
-export function LeadTimeForChangeTabTrigger({ data }) {
+export function LeadTimeForChangeTabTrigger({ dateRange, data, appName }) {
 
   // Calculate the mean
   const calculateMean = data => {
@@ -19,7 +22,15 @@ export function LeadTimeForChangeTabTrigger({ data }) {
     return element.rollingAverage
   })
 
-  const chartMean = calculateMean(averages)
+  const { response, loading } = fetchLeadTimeForChange(appName, dateRange);
+  console.log('LTFC Tab: ', response)
+
+  if (loading) {
+    return <div>Loading...</div>; // Render loading state while data is being fetched
+  }
+
+  const chartMean = response.ltfc / 86400
+  const percentChange = Math.round((1 - (response.ltfc / response.last)) * 100)
 
   // Anomaly detection
   const showAnomalyWarning = data.some((day) => {
@@ -34,15 +45,15 @@ export function LeadTimeForChangeTabTrigger({ data }) {
         {showAnomalyWarning && <Badge className="text-orange-700 bg-orange-50 border-orange-700 dark:text-orange-400 dark:bg-orange-950 dark:border-orange-400" variant="outline">Anomaly detected</Badge>}
       </div>
       <h2 className="flex items-center gap-2">
-        <span className="font-semibold text-base dark:text-white">Lead time for change</span>
+        <span className="font-semibold text-base dark:text-white">Lead time for change ({appName})</span>
         <InfoTooltip label={'The amount of time it takes for any change to get into production'} />
       </h2>
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <strong className="text-black text-2xl font-semibold tracking-tight dark:text-white">{parseFloat(chartMean).toFixed(2)} days</strong>
-          <Badge variant="outline" className="px-1.5 bg-emerald-50 border-0 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><ArrowDown className="h-4 w-4 mr-1 stroke-emerald-700 dark:stroke-emerald-300" /> 16%</Badge>
+          <Badge variant="outline" className="px-1.5 bg-emerald-50 border-0 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><ArrowDown className="h-4 w-4 mr-1 stroke-emerald-700 dark:stroke-emerald-300" />{percentChange}%</Badge>
         </div>
-        <LeadTimeForChangeRating chartMean={chartMean} />
+        {/* <LeadTimeForChangeRating chartMean={chartMean} /> */}
       </div>
     </>
   )

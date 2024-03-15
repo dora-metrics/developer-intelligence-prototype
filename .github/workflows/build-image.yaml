@@ -1,0 +1,46 @@
+---
+
+name: CD
+
+on: [push, pull_request]
+
+
+jobs:
+
+  build_image:
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+# This workflow builds a container image of a java
+# application using the source to image build strategy,
+# and pushes the image to quay.io.
+    env:
+      IMAGE_NAME: pelorus-dashboard
+      TAGS: dev ${{ github.sha }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Setup S2i and Build container image
+      - name: Setup and Build
+        id: build_image
+        uses: redhat-actions/s2i-build@v2
+        with:
+          path_context: '.'
+          # Builder image for a java project
+          builder_image: 'registry.access.redhat.com/ubi9/nodejs-18:1'
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.TAGS }}
+
+      # Push Image to Quay registry
+      - name: Push To Quay Action
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: quay.io/${{ vars.QUAY_NAMESPACE }}
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}

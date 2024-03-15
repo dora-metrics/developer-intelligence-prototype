@@ -6,28 +6,20 @@ import { getServerSession } from 'next-auth'
 import { options } from '../api/auth/[...nextauth]/options'
 import { redirect } from 'next/navigation'
 import { AppIcon } from '@/components/app-icon'
-import { Dashboard } from '@/components/dashboard-alternate'
+import { Dashboard } from '@/components/dashboard'
 import { Cog, FileText, LayoutGrid, Users, Search, Bell, GitBranch } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { getApps, getData } from '../api/old-api'
 
 export const metadata = {
   title: 'Dashboard - Red Hat Developer Intelligence'
-}
-
-async function getData() {
-  const response = await fetch('https://api.npoint.io/ee46484033b5d4d4658e')
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-
-  return response.json()
 }
 
 export default async function Page() {
 
   const session = await getServerSession(options)
   const data = await getData()
+  const appList = await getApps()
 
   if (!session) {
     redirect('/')
@@ -62,7 +54,7 @@ export default async function Page() {
         </div>
       </header>
       <div className="flex flex-col h-full ml-20">
-        <Dashboard data={data} />
+        <Dashboard data={data} appList={appList} />
       </div>
     </>
   )

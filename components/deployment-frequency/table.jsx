@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -9,251 +10,49 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Calendar, GitBranch, GitCommit, Globe } from "lucide-react"
+import { Orbit, FileCode, CalendarCheck, Blocks, Fingerprint } from "lucide-react"
+import useDeploymentFrequencyData from './deploymentFrequency';
+import { dateFormatter } from '@/lib/date-funcs';
 
-export function DeploymentFrequencyTable({ data }) {
+export function DeploymentFrequencyTable({ dateRange, appName }) {
+
+  const { dfData, loading } = useDeploymentFrequencyData(appName, dateRange);
+  console.log('Table dfData: ', dfData)
+
+  if (loading) {
+    return <div>Loading...</div>; // Render loading state while data is being fetched
+  }
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Deployment name</TableHead>
-          <TableHead>Service</TableHead>
+          <TableHead>Deployment Name</TableHead>
+          <TableHead>Image Sha</TableHead>
           <TableHead>Date</TableHead>
-          <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              project-crimson-prototype-q6yb8whv
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <GitBranch className="w-4 h-4" /> Main
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <GitCommit className="w-4 h-4" /> <span className="font-medium">0577e50</span> Commit name description
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Jul 26, 2023
-            </div>
-          </TableCell>
-          <TableCell><div className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Ready</div></TableCell>
-        </TableRow>
-      </TableBody>
+      {dfData.map (({ image, timestamp }) => (
+          <TableRow key={image}>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                <Blocks className="w-4 h-4" />{appName}
+              </div>
+            </TableCell>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                <Fingerprint className="w-4 h-4" /> {image}
+              </div>
+            </TableCell>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                <CalendarCheck className="w-4 h-4" /> { dateFormatter(timestamp) }
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+     </TableBody>
     </Table>
   )
 }
